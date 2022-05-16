@@ -1,0 +1,19 @@
+﻿<Application x:Class="ApexTracker.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:ApexTracker"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="ResourceDictionaries/FullLogo.xaml" />
+                <ResourceDictionary Source="ResourceDictionaries/TitleBarGraphics.xaml" />
+                <ResourceDictionary Source="ResourceDictionaries/ButtonStyles.xaml" />
+                <ResourceDictionary Source="ResourceDictionaries/Fonts.xaml" />
+                <ResourceDictionary Source="ResourceDictionaries/BadgeStyles.xaml" />
+                <ResourceDictionary Source="ResourceDictionaries/BackgroundGraphics.xaml" />
+                <ResourceDictionary Source="ResourceDictionaries/Tooltips.xaml" />
+            </ResourceDictionary.MergedDictionaries>            
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

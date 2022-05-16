@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <TargetFramework>net6.0-windows</TargetFramework>
+        <Nullable>enable</Nullable>
+        <UseWPF>true</UseWPF>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <Folder Include="ResourceDictionaries" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="Fonts\Poppins-SemiBold.ttf" />
+      <Resource Include="Fonts\Poppins-SemiBold.ttf" />
+      <None Remove="Fonts\Poppins-Regular.ttf" />
+      <Resource Include="Fonts\Poppins-Regular.ttf" />
+      <None Remove="Fonts\Poppins-ExtraBold.ttf" />
+      <Resource Include="Fonts\Poppins-ExtraBold.ttf" />
+      <None Remove="Fonts\Poppins-Light.ttf" />
+      <Resource Include="Fonts\Poppins-Light.ttf" />
+      <None Remove="Fonts\MADE Soulmaze.otf" />
+      <Resource Include="Fonts\MADE Soulmaze.otf" />
+      <None Remove="Media\images\man.png" />
+      <Resource Include="Media\images\man.png" />
+    </ItemGroup>
+
+</Project>
