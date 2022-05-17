@@ -1,16 +1,15 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    <Style TargetType="Border" x:Key="SuccessBadge">
-        <Setter Property="Background" Value="#00F3B3"/>
-        <Setter Property="CornerRadius" Value="10"/>
-        <Setter Property="Margin" Value="10 10" />
-        <Setter Property="Padding" Value="10 5"/>
-    </Style>
     
-    <Style TargetType="Border" x:Key="DangerBadge">
+    <Style TargetType="Border" x:Key="StatusBadge">
         <Setter Property="Background" Value="#E74141"/>
         <Setter Property="CornerRadius" Value="10"/>
         <Setter Property="Margin" Value="10 10" />
         <Setter Property="Padding" Value="10 5"/>
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding Path=SimulatorRunning}" Value="true">
+                <Setter Property="Background" Value="#00F3B3"/>
+            </DataTrigger>
+        </Style.Triggers>
     </Style>
 </ResourceDictionary>
