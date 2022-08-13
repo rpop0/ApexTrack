@@ -1,11 +1,12 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using SCSSdkClient;
 
 namespace ApexTracker;
 
 public class Truck: INotifyPropertyChanged
 {
-    private string _brand = "None";
+    private string _brand = "";
     public string Brand
     {
         get => _brand;
@@ -17,7 +18,19 @@ public class Truck: INotifyPropertyChanged
         }
     }
 
-    private string _brandId = "None";
+    private SCSGame _game;
+    public SCSGame Game
+    {
+        get => _game;
+        set
+        {
+            if (_game == value) return;
+            _game = value;
+            OnPropertyChanged();
+        }
+    }
+
+    private string _brandId = "";
     public string BrandId
     {
         get => _brandId;
@@ -29,7 +42,7 @@ public class Truck: INotifyPropertyChanged
         }
     }
 
-    private string _name = "None";
+    private string _name = "";
     public string Name
     {
         get => _name;
@@ -41,7 +54,7 @@ public class Truck: INotifyPropertyChanged
         }
     }
 
-    private string _id = "None";
+    private string _id = "";
     public string Id
     {
         get => _id;
@@ -58,7 +71,14 @@ public class Truck: INotifyPropertyChanged
     private float _odometer;
     public float Odometer
     {
-        get => _odometer;
+        get
+        {
+            if (_game == SCSGame.Ats)
+            {
+                return (float) (_odometer * 0.621371192);
+            }
+            return _odometer;
+        }
         set
         {
             if (_odometer.Equals(value)) return;
@@ -98,6 +118,17 @@ public class Truck: INotifyPropertyChanged
         }
     }
 
+    public void ResetAlLValues()
+    {
+        Brand = "";
+        BrandId = "";
+        Id = "";
+        Name = "";
+        FuelCapacity = 0;
+        Fuel = 0;
+        Odometer = 0;
+        Game = SCSGame.Unknown;
+    }
     public event PropertyChangedEventHandler? PropertyChanged;
     
     private void OnPropertyChanged([CallerMemberName] string? propertyName = null)

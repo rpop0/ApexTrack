@@ -1,20 +1,21 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
 
 namespace ApexTracker.Converters;
 
-public class FuelConverter: IValueConverter
+public class TruckImageConverter: IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        if (value == DependencyProperty.UnsetValue)
+        if (value == DependencyProperty.UnsetValue || (string) value == "")
         {
-            return "";
+            return "https://cdn.apex-express.net/no-truck.png";
         }
-        var fuel = (float) value;
-        return fuel.Equals(0) ? "" : $"{(float) value:N0}%";
+        var valStr = value.ToString();
+        return $"https://cdn.apex-express.net/{valStr}.png";
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

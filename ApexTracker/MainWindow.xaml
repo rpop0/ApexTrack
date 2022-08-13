@@ -7,7 +7,7 @@
         xmlns:converter="clr-namespace:ApexTracker.Converters"
         mc:Ignorable="d"
         Title="" Height="560" Width="945"
-        ResizeMode="NoResize" d:DataContext="{d:DesignInstance }">
+        ResizeMode="CanMinimize" d:DataContext="{d:DesignInstance }">
     <WindowChrome.WindowChrome>
         <WindowChrome CaptionHeight="85"></WindowChrome>
     </WindowChrome.WindowChrome>
@@ -16,6 +16,11 @@
         <converter:OdometerConverter x:Key="OdometerConverter" />
         <converter:FuelConverter x:Key="FuelConverter" />
         <converter:StatusTextConverter x:Key="StatusTextConverter" />
+        <converter:OdometerSymbolConverter x:Key="OdometerSymbolConverter" />
+        <converter:IncomeConverter x:Key="IncomeConverter" /> 
+        <converter:IncomeCurrencyConverter x:Key="IncomeCurrencyConverter" />
+        <converter:CityCompanyConverter x:Key="CityCompanyConverter" />
+        <converter:TruckImageConverter x:Key="TruckImageConverter"/>
         <converter:StatusBackgroundImageConverter x:Key="StatusBackgroundImageConverter" SimRunningImageSource="{StaticResource BackgroundArrowSuccess}" SimStoppedImageSource="{StaticResource BackgroundArrowDanger}" />
     </Window.Resources>
     
@@ -96,10 +101,23 @@
                             </Grid.ColumnDefinitions>
                             
                             <Grid Grid.Column="0">
+     
                                 <Border Width="117" Height="117" Margin="17 0" CornerRadius="10">
-                                    <Border.Background>
-                                        <ImageBrush ImageSource="Media/images/man.png"/>
-                                    </Border.Background>
+                                    <Grid>
+                                        <Border Name="Mask"
+                                                Background="#f5f5f5"
+                                                BorderBrush="#f5f5f5"
+                                                BorderThickness="0"
+                                                CornerRadius="10">
+                                        </Border>
+                                        <StackPanel>
+                                            <Image Stretch="Uniform" RenderOptions.BitmapScalingMode="HighQuality" Source="{Binding Path=CurrentTruck.Id, Converter={StaticResource TruckImageConverter}}" />
+
+                                            <StackPanel.OpacityMask>
+                                                <VisualBrush Visual="{Binding ElementName=Mask}" />
+                                            </StackPanel.OpacityMask>
+                                        </StackPanel>
+                                    </Grid>
                                 </Border>
                             </Grid>
                             <StackPanel Margin="0 23" Grid.Column="1">
@@ -116,13 +134,12 @@
                                 <StackPanel Orientation="Horizontal" Margin="0 0 0 6">
                                     <TextBlock FontSize="14" FontFamily="{StaticResource Poppins-SemiBold}" Text="Odometru: " />
                                     <TextBlock FontSize="14" FontFamily="{StaticResource Poppins-ExtraBold}" Text="{Binding Path=CurrentTruck.Odometer, Converter={StaticResource OdometerConverter}}"/>
-                                    <TextBlock FontSize="14" FontFamily="{StaticResource Poppins-ExtraBold}" Text="KM" />
+                                    <TextBlock FontSize="14" FontFamily="{StaticResource Poppins-ExtraBold}" Text="{Binding Path=CurrentTruck.Game, Converter={StaticResource OdometerSymbolConverter}}"/>
                                 </StackPanel>
                                 
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock FontSize="14" FontFamily="{StaticResource Poppins-SemiBold}" Text="Rezervor: " />
                                     <TextBlock FontSize="14" FontFamily="{StaticResource Poppins-ExtraBold}" Text="{Binding Path=CurrentTruck.Fuel, Converter={StaticResource FuelConverter}}" />
-                                    <TextBlock FontSize="14" FontFamily="{StaticResource Poppins-ExtraBold}" Text="%" />
                                 </StackPanel>
                             </StackPanel>
                             
@@ -145,23 +162,32 @@
                             <StackPanel Width="350" MaxWidth="350" Margin="23 23" Grid.Column="0">
                                 <DockPanel Margin="0 0 0 6">
                                     <TextBlock FontSize="14" FontFamily="{StaticResource Poppins-SemiBold}" Text="Cargo: " />
-                                    <TextBlock TextTrimming="CharacterEllipsis" FontSize="14" FontFamily="{StaticResource Poppins-ExtraBold}" Text="Frac tank" />
+                                    <TextBlock TextTrimming="CharacterEllipsis" FontSize="14" FontFamily="{StaticResource Poppins-ExtraBold}" Text="{Binding Path=CurrentDelivery.CargoName}" />
                                 </DockPanel>
                                 
                                 <DockPanel Margin="0 0 0 6">
                                     <TextBlock FontSize="14" FontFamily="{StaticResource Poppins-SemiBold}" Text="Pornire: " />
-                                    <TextBlock TextTrimming="CharacterEllipsis" FontSize="14" FontFamily="{StaticResource Poppins-ExtraBold}" Text="Los Angeles - Sons" />
+                                    <TextBlock TextTrimming="CharacterEllipsis" FontSize="14" FontFamily="{StaticResource Poppins-ExtraBold}" Text="{Binding Path=CurrentDelivery.CitySource, Converter={StaticResource CityCompanyConverter}}" />
+                                    <TextBlock TextTrimming="CharacterEllipsis" FontSize="14" FontFamily="{StaticResource Poppins-ExtraBold}" Text="{Binding Path=CurrentDelivery.CompanySource}" />
                                 </DockPanel>
                                 
                                 <DockPanel Margin="0 0 0 6">
                                     <TextBlock FontSize="14" FontFamily="{StaticResource Poppins-SemiBold}" Text="Destinație: " />
-                                    <TextBlock TextTrimming="CharacterEllipsis" FontSize="14" FontFamily="{StaticResource Poppins-ExtraBold}" Text="Las Vegas - Amazon" />
+                                    <TextBlock TextTrimming="CharacterEllipsis" FontSize="14" FontFamily="{StaticResource Poppins-ExtraBold}" Text="{Binding Path=CurrentDelivery.CityDestination, Converter={StaticResource CityCompanyConverter}}" />
+                                    <TextBlock TextTrimming="CharacterEllipsis" FontSize="14" FontFamily="{StaticResource Poppins-ExtraBold}" Text="{Binding Path=CurrentDelivery.CompanyDestination}" />
                                 </DockPanel>
                                 
                                 <DockPanel>
                                     <TextBlock FontSize="14" FontFamily="{StaticResource Poppins-SemiBold}" Text="Venit: " />
-                                    <TextBlock FontSize="14" FontFamily="{StaticResource Poppins-ExtraBold}" Text="$" />
-                                    <TextBlock TextTrimming="CharacterEllipsis" FontSize="14" FontFamily="{StaticResource Poppins-ExtraBold}" Text="23.924" />
+                                    <TextBlock FontSize="14" FontFamily="{StaticResource Poppins-ExtraBold}" >
+                                        <TextBlock.Text>
+                                            <MultiBinding Converter="{StaticResource IncomeCurrencyConverter}">
+                                                <Binding Path="CurrentTruck.Game" />
+                                                <Binding Path="CurrentDelivery.Started" />
+                                            </MultiBinding>
+                                        </TextBlock.Text> 
+                                    </TextBlock>
+                                    <TextBlock TextTrimming="CharacterEllipsis" FontSize="14" FontFamily="{StaticResource Poppins-ExtraBold}" Text="{Binding Path=CurrentDelivery.Income, Converter={StaticResource IncomeConverter}}" />
                                 </DockPanel>
                             </StackPanel>
                             

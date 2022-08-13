@@ -5,6 +5,7 @@
         <TargetFramework>net6.0-windows</TargetFramework>
         <Nullable>enable</Nullable>
         <UseWPF>true</UseWPF>
+        <ApplicationIcon>Media\images\ICON.ico</ApplicationIcon>
     </PropertyGroup>
 
     <ItemGroup>
@@ -24,6 +25,7 @@
       <Resource Include="Fonts\MADE Soulmaze.otf" />
       <None Remove="Media\images\man.png" />
       <Resource Include="Media\images\man.png" />
+      <None Remove="Media\images\ICON.png" />
     </ItemGroup>
 
 </Project>
