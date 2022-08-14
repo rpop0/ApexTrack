@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using SCSSdkClient;
 using SCSSdkClient.Object;
@@ -49,7 +50,8 @@ public sealed class TrackerService: INotifyPropertyChanged
             OnPropertyChanged();
         }
     }
-    
+
+    private Process? _gameProcess;
 
     public TrackerService()
     {
@@ -58,6 +60,13 @@ public sealed class TrackerService: INotifyPropertyChanged
         var telemetry = new SCSSdkTelemetry();
         telemetry.Data += Telemetry_Data;
         telemetry.JobDelivered += TelemetryJobDelivered;
+    }
+
+    private void gameProcess_Exited(object? sender, EventArgs e)
+    {
+        SimulatorRunning = false;
+        CurrentTruck.ResetAlLValues();
+        CurrentDelivery = null;
     }
 
 
@@ -73,20 +82,35 @@ public sealed class TrackerService: INotifyPropertyChanged
     
     private void Telemetry_Data(SCSTelemetry data, bool updated)
     {
-        if (Process.GetProcessesByName("eurotrucks2").Length != 0 || Process.GetProcessesByName("amtrucks").Length != 0)
+
+        if (!SimulatorRunning)
         {
+            // Tries to get the ets2 process, if it's not found, try the ats one.
+            var process = Process.GetProcessesByName("eurotrucks2");
+            
+            if (process.Length == 0)
+            {
+                process = Process.GetProcessesByName("amtrucks");
+            }
+            
+            // If neither are found, just return with no process.
+            if (process.Length == 0)
+            {
+                return;
+            }
+
+            // GetProcessesByName returns a list, so grab the first from the list. EnableRaisingEvents is required
+            // for the Exited event to be fired.
             SimulatorRunning = true;
+            _gameProcess = process.First();
+            _gameProcess.EnableRaisingEvents = true;
+            _gameProcess.Exited += gameProcess_Exited;
         }
-        else
-        {
-            SimulatorRunning = false;
-            CurrentTruck.ResetAlLValues();
-            CurrentDelivery = null;
-        }
-        
+
         if (!updated) {
             return;
         }
+        
         try {
             if (data.TruckValues.ConstantsValues.Id != CurrentTruck.Id)
             {

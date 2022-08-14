@@ -63,16 +63,37 @@
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
                     <Grid>
-                        <Image x:Name="QuitButtonIcon" Source="{StaticResource  SettingsIcon}"></Image>
+                        <Image x:Name="SettingsButtonIcon" Source="{StaticResource  SettingsIcon}"></Image>
                         <ContentPresenter VerticalAlignment="Top" HorizontalAlignment="Center" />
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="QuitButtonIcon" Property="Source" Value="{StaticResource SettingsIconHover }" />
+                            <Setter TargetName="SettingsButtonIcon" Property="Source" Value="{StaticResource SettingsIconHover }" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
+    
+    <Style TargetType="Button" x:Key="SettingsButtonActive">
+        <Setter Property="Foreground" Value="Transparent "/>
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Width" Value="20px"/>
+        <Setter Property="Height" Value="20px" />
+        <Setter Property="Margin" Value="0px 0px 0px 5px"></Setter>
+        <Setter Property="Padding" Value="0px" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Grid>
+                        <Image x:Name="SettingsButtonIcon" Source="{StaticResource  SettingsIconHover}"></Image>
+                        <ContentPresenter VerticalAlignment="Top" HorizontalAlignment="Center" />
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
 </ResourceDictionary>
